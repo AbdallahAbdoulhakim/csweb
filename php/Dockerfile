@@ -17,6 +17,10 @@ RUN set -eux; \
 	a2enmod rewrite; \
 	sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
 
+RUN set -eux; \
+	echo 'SetEnvIf X-Forwarded-Proto "https" HTTPS=on' > /etc/apache2/conf-available/proxy-https.conf; \
+	a2enconf proxy-https
+
 # uncomment below to add modsecurity
 #RUN set -eux; \
 #	apt-get install -y modsecurity-crs libapache2-mod-security2; \ 
