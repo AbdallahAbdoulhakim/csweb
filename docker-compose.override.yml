@@ -1,0 +1,17 @@
+services:
+  php:
+    ports:
+      - "80:80"
+  mysql:
+    ports:
+      - "127.0.0.1:3306:3306"
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: mysql
+    ports:
+      - "127.0.0.1:8080:80"
+    networks:
+      - backend
+    depends_on:
+      - mysql
