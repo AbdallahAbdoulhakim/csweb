@@ -15,6 +15,10 @@ Usage (aucune dépendance externe) :
   docker exec -i csweb-mysql-1 sh -c 'mysql -uroot -p"$MYSQL_ROOT_PASSWORD"' < cadre.sql
 
 Le script recrée les tables : il peut être relancé à chaque nouvelle version du cadre.
+
+Le droit de lecture du dashboard se donne une fois, à part (l'hôte du compte
+diffère entre le poste de dev et la production) :
+  GRANT SELECT ON ucrgph05_cadre.* TO 'dashboard_ro'@'<hôte>';
 """
 import re
 import sys
@@ -173,7 +177,6 @@ def main():
             values = ',\n'.join('(' + ','.join(sql(d[c]) for c in cols) + ')' for d in data[i:i + 1000])
             print(f'INSERT INTO {table} ({",".join(cols)}) VALUES\n{values};')
         print(f'-- {table} : {len(data)} lignes', file=sys.stderr)
-    print(f"GRANT SELECT ON {DB}.* TO 'dashboard_ro'@'%';")
 
 
 if __name__ == '__main__':
