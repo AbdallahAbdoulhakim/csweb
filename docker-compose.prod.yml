@@ -16,6 +16,13 @@ services:
     networks:
       - backend
 
+  # MySQL publié uniquement sur l'IP privée (VPC) de la VM, pour le dashboard.
+  # L'IP vient de MYSQL_BIND_IP dans .env (non versionné) ; par défaut 127.0.0.1,
+  # donc jamais exposé sur l'IP publique si la variable est absente.
+  mysql:
+    ports:
+      - "${MYSQL_BIND_IP:-127.0.0.1}:3306:3306"
+
   certbot:
     image: certbot/certbot
     restart: unless-stopped
